@@ -1,0 +1,134 @@
+{
+  "programming|installation|qwen_3_coder": {
+    "intent": "programming|installation|qwen_3_coder",
+    "domain": "programming",
+    "task": "installation",
+    "object": "qwen_3_coder",
+    "approved_answer": "As of current knowledge, a specific model named 'Qwen 3 Coder' is not yet a publicly released and widely available model on platforms like Hugging Face. The most relevant Qwen models specialized for coding tasks are typically found within the Qwen 1.5 series (e.g., `Qwen/Qwen1.5-7B-Chat-Coder`).\n\nTo install and use a Qwen Coder model, you generally leverage the Hugging Face `transformers` library in Python. Here's how:\n\n### Prerequisites\n1.  **Python:** Ensure you have Python 3.8+ installed.\n2.  **pip:** Ensure pip is up-to-date.\n3.  **GPU (Recommended):** For optimal performance, especially with larger models, an NVIDIA GPU with CUDA installed is highly recommended. CPU-only inference will be significantly slower.\n\n### Installation Steps\n1.  **Create a Virtual Environment (Recommended):**\n    bash\n    python -m venv qwen_env\n    source qwen_env/bin/activate # On Windows: qwen_env\\Scripts\\activate\n    \n\n2.  **Install Required Libraries:**\n    Install `torch`, `transformers`, `accelerate`, and `bitsandbytes`. `bitsandbytes` is useful for quantization to reduce memory usage.\n    bash\n    pip install torch transformers accelerate bitsandbytes\n    \n    *   **Note for `torch`:** If you have a specific CUDA version or are on a different OS, you might need a more specific `torch` installation command from [PyTorch's website](https://pytorch.org/get-started/locally/). For example, for CUDA 12.1: `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121`\n\n### Basic Usage Example (Python)\nThis example demonstrates how to load a Qwen 1.5 Coder model and perform a simple inference. We'll use `Qwen/Qwen1.5-7B-Chat-Coder` as an example.\n\npython\nimport torch\nfrom transformers import AutoTokenizer, AutoModelForCausalLM\n\n# 1. Define the model ID (verify the exact name on Hugging Face Hub)\nmodel_id = \"Qwen/Qwen1.5-7B-Chat-Coder\" \n\n# 2. Load the tokenizer\ntokenizer = AutoTokenizer.from_pretrained(model_id)\n\n# 3. Load the model\n# Use torch_dtype=torch.bfloat16 or torch.float16 for GPUs (saves VRAM and speeds up).\n# For 4-bit quantization (to save VRAM), use load_in_4bit=True (requires bitsandbytes).\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_id,\n    torch_dtype=torch.bfloat16, \n    device_map=\"auto\",          \n    # load_in_4bit=True,        \n)\n\n# 4. Prepare the chat history for a coding task\nmessages = [\n    {\"role\": \"system\", \"content\": \"You are a helpful coding assistant.\"},\n    {\"role\": \"user\", \"content\": \"Write a Python function to calculate the factorial of a number.\"},\n]\ntext = tokenizer.apply_chat_template(\n    messages,\n    tokenize=False,\n    add_generation_prompt=True\n)\nmodel_inputs = tokenizer([text], return_tensors=\"pt\").to(model.device)\n\n# 5. Generate a response\ngenerated_ids = model.generate(\n    model_inputs.input_ids,\n    max_new_tokens=512,\n    do_sample=True,\n    temperature=0.7,\n    top_p=0.9\n)\ngenerated_ids = [\n    output_ids[len(model_inputs.input_ids[0]):] for output_ids in generated_ids\n]\n\nresponse = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]\nprint(response)\n\n# 6. Deactivate virtual environment when done\n# deactivate\n\n\n### Key Considerations\n*   **Model Name:** Always verify the exact model ID on the Hugging Face website, as new models are released frequently.\n*   **Hardware Requirements:** Running these models, especially larger ones, requires significant RAM (16GB+ for 7B models) and preferably a powerful GPU with sufficient VRAM (e.g., 12GB+).\n*   **Quantization:** For limited VRAM, `load_in_4bit=True` with `bitsandbytes` can drastically reduce memory footprint.\n*   **Chat Template:** Qwen models are often fine-tuned on specific chat formats. Using `tokenizer.apply_chat_template` ensures your input adheres to this format for optimal responses.",
+    "source": {
+      "generated_by": [
+        "Gemini",
+        "ChatGPT",
+        "Groq",
+        "Ollama"
+      ],
+      "judge": "Gemini_Judge",
+      "human_verified": false,
+      "auto_saved": true
+    },
+    "confidence": 0.85,
+    "created_at": "2026-01-28T18:15:08.243142",
+    "last_used_at": "2026-01-28T18:15:08.243142",
+    "history_log": []
+  },
+  "politics|explanation|indian_prime_minister": {
+    "intent": "politics|explanation|indian_prime_minister",
+    "domain": "politics",
+    "task": "explanation",
+    "object": "indian_prime_minister",
+    "approved_answer": "The current Prime Minister of India is Narendra Modi.",
+    "source": {
+      "generated_by": [
+        "Gemini",
+        "ChatGPT",
+        "Groq",
+        "Ollama"
+      ],
+      "judge": "Gemini_Judge",
+      "human_verified": false,
+      "auto_saved": true
+    },
+    "confidence": 0.85,
+    "created_at": "2026-01-28T18:16:08.176465",
+    "last_used_at": "2026-01-28T18:16:08.176465",
+    "history_log": []
+  },
+  "entertainment|ranking_retrieval|top_anime_characters": {
+    "intent": "entertainment|ranking_retrieval|top_anime_characters",
+    "domain": "entertainment",
+    "task": "ranking_retrieval",
+    "object": "top_anime_characters",
+    "approved_answer": "The concept of 'top' anime characters is highly subjective and depends on individual preferences, as well as criteria like impact, character development, and global recognition. Based on general consensus, fan popularity, and influence, here are 5 widely recognized characters:\n\n1.  **Goku** (Dragon Ball series)\n2.  **Naruto Uzumaki** (Naruto series)\n3.  **Monkey D. Luffy** (One Piece)\n4.  **Lelouch Lamperouge** (Code Geass)\n5.  **Edward Elric** (Fullmetal Alchemist)",
+    "source": {
+      "generated_by": [
+        "Gemini",
+        "ChatGPT",
+        "Groq",
+        "Ollama"
+      ],
+      "judge": "Gemini_Judge",
+      "human_verified": false,
+      "auto_saved": true
+    },
+    "confidence": 0.85,
+    "created_at": "2026-01-28T18:16:48.199402",
+    "last_used_at": "2026-01-28T18:16:48.199402",
+    "history_log": []
+  },
+  "personal_data|storage|user_dob_18_02_2002": {
+    "intent": "personal_data|storage|user_dob_18_02_2002",
+    "domain": "personal_data",
+    "task": "storage",
+    "object": "user_dob_18_02_2002",
+    "approved_answer": "Thank you for providing your date of birth (18/02/2002). However, as an AI, I am stateless and cannot store personal information or remember details from past conversations for future reference. Each query is processed independently.",
+    "source": {
+      "generated_by": [
+        "Gemini",
+        "ChatGPT",
+        "Groq",
+        "Ollama"
+      ],
+      "judge": "Gemini_Judge",
+      "human_verified": false,
+      "auto_saved": true
+    },
+    "confidence": 0.85,
+    "created_at": "2026-01-31T10:05:00.274327",
+    "last_used_at": "2026-01-31T10:05:00.274327",
+    "history_log": []
+  },
+  "personal|introduction|shivam": {
+    "intent": "personal|introduction|shivam",
+    "domain": "personal",
+    "task": "introduction",
+    "object": "shivam",
+    "approved_answer": "ROUTING_SIGNAL",
+    "source": {
+      "generated_by": [
+        "Gemini",
+        "ChatGPT",
+        "Groq",
+        "Ollama"
+      ],
+      "judge": "Gemini_Judge",
+      "human_verified": false,
+      "auto_saved": true
+    },
+    "confidence": 0.85,
+    "created_at": "2026-01-31T10:05:49.315318",
+    "last_used_at": "2026-01-31T10:05:49.315318",
+    "history_log": []
+  },
+  "travel|ranking_retrieval|top_tourist_destinations": {
+    "intent": "travel|ranking_retrieval|top_tourist_destinations",
+    "domain": "travel",
+    "task": "ranking_retrieval",
+    "object": "top_tourist_destinations",
+    "approved_answer": "India boasts numerous top places to visit, attracting travelers with its diverse culture, historical sites, natural beauty, and vibrant festivals. Some notable destinations include the iconic Taj Mahal in Agra, the bustling streets of Delhi, the serene backwaters of Kerala, and the majestic forts of Rajasthan.",
+    "source": {
+      "generated_by": [
+        "Gemini",
+        "ChatGPT",
+        "Groq",
+        "Ollama"
+      ],
+      "judge": "Gemini_Judge",
+      "human_verified": false,
+      "auto_saved": true
+    },
+    "confidence": 0.85,
+    "created_at": "2026-01-31T10:07:50.207435",
+    "last_used_at": "2026-01-31T10:07:50.207435",
+    "history_log": []
+  }
+}
